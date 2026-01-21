@@ -58,11 +58,11 @@
       "slot": "grip_slot",
       "parts": [
         {
-          "id": "moe_grip",
-          "name": "MOE Pistol Grip",
-          "model": "/models/parts/grip/moe.glb",
-          "thumbnail": "/thumbnails/moe.jpg",
-          "description": "Ergonomic pistol grip for better control."
+          "id": "gwh15_grip",
+          "name": "GWH-15 Rifle Grip",
+          "model": "/models/parts/grip/GWH-15_Rifle_Grip.glb",
+          "thumbnail": "/thumbnails/gwh15.jpg",
+          "description": "High-performance ergonomic rifle grip."
         }
       ]
     },
