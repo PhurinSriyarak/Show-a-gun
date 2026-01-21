@@ -3,10 +3,9 @@ import { Canvas, useThree } from '@react-three/fiber';
 import {
     OrbitControls,
     Stage,
-    Bounds,
     Environment,
-    PerspectiveCamera,
-    useHelper
+    useGLTF,
+    Clone
 } from '@react-three/drei';
 import * as THREE from 'three';
 import { gsap } from 'gsap';
@@ -14,31 +13,55 @@ import { gsap } from 'gsap';
 // Mock function to determine where to place the part relative to the base receiver
 const getPartPosition = (category) => {
     switch (category) {
-        case 'barrel': return [2.5, 0, 0];
-        case 'handguard': return [1.5, 0, 0];
-        case 'stock': return [-1.7, 0, 0];
-        case 'grip': return [0.3, -0.7, 0];
-        case 'optic': return [0.3, 0.6, 0];
+        case 'barrel': return [1.2, 0.3, 0];
+        case 'handguard': return [0.8, 0.3, 0];
+        case 'stock': return [-1.0, 0.1, 0];
+        case 'grip': return [-0.2, -0.2, 0];
+        case 'optic': return [0.1, 0.7, 0];
         default: return [0, 0, 0];
     }
 };
 
-const PartModel = ({ path, category, position = [0, 0, 0], scale = 1 }) => {
-    let color = "#444";
-    let size = [1, 1, 1];
+const PartModel = ({ path, category }) => {
+    // Use try-catch or conditional to handle missing models
+    try {
+        const { scene } = useGLTF(path);
+        return <primitive object={scene.clone()} position={getPartPosition(category)} />;
+    } catch (e) {
+        // Fallback to a small marker if model fails to load
+        return (
+            <mesh position={getPartPosition(category)}>
+                <boxGeometry args={[0.1, 0.1, 0.1]} />
+                <meshStandardMaterial color="red" />
+            </mesh>
+        );
+    }
+};
 
-    if (path.includes('barrel')) { color = "#222"; size = [3, 0.3, 0.3]; }
-    if (path.includes('handguard')) { color = "#333"; size = [2.2, 0.5, 0.5]; }
-    if (path.includes('stock')) { color = "#2d3436"; size = [1.2, 1, 0.4]; }
-    if (path.includes('grip')) { color = "#222"; size = [0.4, 0.8, 0.4]; }
-    if (path.includes('optic')) { color = "#111"; size = [0.6, 0.5, 0.4]; }
+// Base gun model loader
+const BaseGun = ({ color }) => {
+    try {
+        const { scene } = useGLTF('/models/base/ar15_base.glb');
 
-    return (
-        <mesh position={getPartPosition(category)} scale={scale}>
-            <boxGeometry args={size} />
-            <meshStandardMaterial color={color} roughness={0.4} metalness={0.7} />
-        </mesh>
-    );
+        // Apply color to the base body if it has materials
+        useEffect(() => {
+            scene.traverse((child) => {
+                if (child.isMesh) {
+                    child.material.color = new THREE.Color(color);
+                }
+            });
+        }, [color, scene]);
+
+        return <primitive object={scene} />;
+    } catch (e) {
+        // If no base model yet, show a placeholder
+        return (
+            <mesh>
+                <boxGeometry args={[1.5, 0.5, 0.2]} />
+                <meshStandardMaterial color={color} />
+            </mesh>
+        );
+    }
 };
 
 const CameraController = ({ cameraPreset }) => {
@@ -47,23 +70,23 @@ const CameraController = ({ cameraPreset }) => {
     useEffect(() => {
         if (!controls) return;
 
-        let targetPos = [5, 2, 5];
+        let targetPos = [4, 1.5, 4];
         let targetLookAt = [0, 0, 0];
 
         switch (cameraPreset) {
             case 'overview':
-                targetPos = [5, 2, 5];
+                targetPos = [4, 1.5, 4];
                 break;
             case 'front':
-                targetPos = [3, 1, 2];
-                targetLookAt = [2, 0, 0];
+                targetPos = [2.5, 0.5, 1.5];
+                targetLookAt = [1, 0.3, 0];
                 break;
             case 'rear':
-                targetPos = [-3, 1, 2];
-                targetLookAt = [-1.5, 0, 0];
+                targetPos = [-2.5, 0.5, 1.5];
+                targetLookAt = [-0.8, 0.1, 0];
                 break;
             case 'side':
-                targetPos = [0, 0.5, 6];
+                targetPos = [0, 0, 5];
                 break;
             default:
                 break;
@@ -92,8 +115,8 @@ const CameraController = ({ cameraPreset }) => {
 
 const Viewer = ({ selectedParts, baseColor, cameraPreset }) => {
     return (
-        <div style={{ width: '100%', height: '100%', background: '#6e6e6eff' }}>
-            <Canvas shadows gl={{ preserveDrawingBuffer: true }}>
+        <div style={{ width: '100%', height: '100%', background: '#ffffff' }}>
+            <Canvas shadows gl={{ preserveDrawingBuffer: true }} camera={{ position: [5, 2, 5] }}>
                 <Suspense fallback={null}>
                     <CameraController cameraPreset={cameraPreset} />
 
@@ -104,16 +127,12 @@ const Viewer = ({ selectedParts, baseColor, cameraPreset }) => {
                         adjustCamera={false}
                     >
                         <group>
-                            {/* Base Gun Body */}
-                            <mesh position={[0, 0, 0]}>
-                                <boxGeometry args={[2.5, 0.9, 0.45]} />
-                                <meshStandardMaterial color={baseColor} roughness={0.5} metalness={0.6} />
-                            </mesh>
+                            <BaseGun color={baseColor} />
 
                             {/* Selected Parts */}
                             {Object.entries(selectedParts).map(([category, part]) => (
                                 <PartModel
-                                    key={category}
+                                    key={category + part.id} // Change key to force re-render when part changes
                                     category={category}
                                     path={part.model}
                                 />
