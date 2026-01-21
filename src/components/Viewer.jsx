@@ -92,14 +92,14 @@ const CameraController = ({ cameraPreset }) => {
 
 const Viewer = ({ selectedParts, baseColor, cameraPreset }) => {
     return (
-        <div style={{ width: '100%', height: '100%', background: 'radial-gradient(circle at center, #1a1a1a 0%, #000 100%)' }}>
+        <div style={{ width: '100%', height: '100%', background: '#6e6e6eff' }}>
             <Canvas shadows gl={{ preserveDrawingBuffer: true }}>
                 <Suspense fallback={null}>
                     <CameraController cameraPreset={cameraPreset} />
 
                     <Stage
                         environment="city"
-                        intensity={0.6}
+                        intensity={0.8}
                         contactShadow={{ opacity: 0.5, blur: 3 }}
                         adjustCamera={false}
                     >
