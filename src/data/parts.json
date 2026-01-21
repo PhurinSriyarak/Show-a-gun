@@ -1,0 +1,83 @@
+{
+  "categories": {
+    "barrel": {
+      "name": "Barrel",
+      "slot": "barrel_slot",
+      "parts": [
+        {
+          "id": "barrel_10_5",
+          "name": "10.5\" CQB Barrel",
+          "model": "/models/parts/barrel/barrel_10.5.glb",
+          "thumbnail": "/thumbnails/barrel_10_5.jpg",
+          "description": "Short and maneuverable for CQB."
+        },
+        {
+          "id": "barrel_16",
+          "name": "16\" Tactical Barrel",
+          "model": "/models/parts/barrel/barrel_16.glb",
+          "thumbnail": "/thumbnails/barrel_16.jpg",
+          "description": "Standard length for balanced performance."
+        }
+      ]
+    },
+    "handguard": {
+      "name": "Handguard",
+      "slot": "handguard_slot",
+      "parts": [
+        {
+          "id": "mlok_9",
+          "name": "M-LOK 9\" Rail",
+          "model": "/models/parts/handguard/mlok_9.glb",
+          "thumbnail": "/thumbnails/mlok_9.jpg",
+          "description": "Lightweight M-LOK rail system."
+        },
+        {
+          "id": "quad_12",
+          "name": "Quad Rail 12\"",
+          "model": "/models/parts/handguard/quad_12.glb",
+          "thumbnail": "/thumbnails/quad_12.jpg",
+          "description": "Classic quad rail for maximum attachment space."
+        }
+      ]
+    },
+    "stock": {
+      "name": "Stock",
+      "slot": "stock_slot",
+      "parts": [
+        {
+          "id": "ctr_stock",
+          "name": "CTR Carbine Stock",
+          "model": "/models/parts/stock/ctr.glb",
+          "thumbnail": "/thumbnails/ctr.jpg",
+          "description": "Drop-in replacement for AR15/M16 carbines."
+        }
+      ]
+    },
+    "grip": {
+      "name": "Grip",
+      "slot": "grip_slot",
+      "parts": [
+        {
+          "id": "moe_grip",
+          "name": "MOE Pistol Grip",
+          "model": "/models/parts/grip/moe.glb",
+          "thumbnail": "/thumbnails/moe.jpg",
+          "description": "Ergonomic pistol grip for better control."
+        }
+      ]
+    },
+    "optic": {
+      "name": "Optic",
+      "slot": "optic_slot",
+      "parts": [
+        {
+          "id": "red_dot",
+          "name": "Compact Red Dot",
+          "model": "/models/parts/optic/red_dot.glb",
+          "thumbnail": "/thumbnails/red_dot.jpg",
+          "description": "Fast target acquisition."
+        }
+      ]
+    }
+  }
+}
