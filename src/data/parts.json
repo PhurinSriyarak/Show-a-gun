@@ -62,7 +62,17 @@
           "name": "GWH-15 Rifle Grip",
           "model": "/models/parts/grip/GWH-15_Rifle_Grip.glb",
           "thumbnail": "/thumbnails/gwh15.jpg",
-          "description": "High-performance ergonomic rifle grip."
+          "description": "High-performance ergonomic rifle grip.",
+          "scale": [
+            0.01,
+            0.01,
+            0.01
+          ],
+          "rotation": [
+            1.57,
+            0,
+            0
+          ]
         }
       ]
     },
